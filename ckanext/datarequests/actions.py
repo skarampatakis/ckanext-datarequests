@@ -19,7 +19,7 @@
 
 
 import datetime
-import cgi
+from html import escape
 import logging
 
 from ckan import model
@@ -132,7 +132,7 @@ def _dictize_comment(comment):
 
 
 def _undictize_comment_basic(comment, data_dict):
-    comment.comment = cgi.escape(data_dict.get('comment', ''))
+    comment.comment = escape(data_dict.get('comment', ''))
     comment.datarequest_id = data_dict.get('datarequest_id', '')
 
 
