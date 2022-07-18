@@ -19,8 +19,11 @@
 
 
 import datetime
-from html import escape
 import logging
+try:
+    from html import escape
+except ImportError:
+    from cgi import escape
 
 from ckan import model
 from ckan.lib import mailer
