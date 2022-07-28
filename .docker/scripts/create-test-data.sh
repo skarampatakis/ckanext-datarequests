@@ -58,7 +58,7 @@ add_user_if_needed test_org_admin "Test Admin" test_org_admin@localhost
 add_user_if_needed test_org_editor "Test Editor" test_org_editor@localhost
 add_user_if_needed test_org_member "Test Member" test_org_member@localhost
 
-echo "Creating ${TEST_ORG_TITLE} Organisation:"
+echo "Creating ${TEST_ORG_TITLE} organisation:"
 
 TEST_ORG=$( \
     curl -LsH "Authorization: ${API_KEY}" \
@@ -66,7 +66,7 @@ TEST_ORG=$( \
     ${CKAN_ACTION_URL}/organization_create
 )
 
-TEST_ORG_ID=$(echo $TEST_ORG | sed -r 's/^(.*)"id": "([^"]*)",(.*)/\2/')
+TEST_ORG_ID=$(echo $TEST_ORG | python $APP_DIR/scripts/extract-id.py)
 
 echo "Assigning test users to '${TEST_ORG_TITLE}' organisation (${TEST_ORG_ID}):"
 
@@ -106,7 +106,7 @@ DR_ORG=$( \
     ${CKAN_ACTION_URL}/organization_create
 )
 
-DR_ORG_ID=$(echo $DR_ORG | sed -r 's/^(.*)"id": "([^"]*)",(.*)/\2/')
+DR_ORG_ID=$(echo $DR_ORG | python $APP_DIR/scripts/extract-id.py)
 
 echo "Assigning test users to ${DR_ORG_TITLE} Organisation:"
 
