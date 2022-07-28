@@ -9,13 +9,13 @@ install_requirements () {
     shift
     # Identify the best match requirements file, ignore the others.
     # If there is one specific to our Python version, use that.
-    for filename_pattern in $*; do
+    for filename_pattern in $@; do
         if [ -f "$PROJECT_DIR/${filename_pattern}-$PYTHON_VERSION.txt" ]; then
             pip install -r "$PROJECT_DIR/$filename"
             return 0
         fi
     done
-    for filename_pattern in $*; do
+    for filename_pattern in $@; do
         if [ -f "$PROJECT_DIR/${filename_pattern}.txt" ]; then
             pip install -r "$PROJECT_DIR/$filename"
             return 0
