@@ -17,6 +17,7 @@ def log_in(context):
     assert context.persona
     context.execute_steps(u"""
         When I go to homepage
+        And I resize the browser to 1024x2048
         And I click the link with text that contains "Log in"
         And I enter my credentials and login
     """)
@@ -26,11 +27,19 @@ def log_in(context):
 def submit_login(context):
     assert context.persona
     context.execute_steps(u"""
-        When I fill in "login" with "$name"
-        And I fill in "password" with "$password"
-        And I press the element with xpath "//button[contains(string(), 'Login')]"
+        When I attempt to log in with password "$password"
         Then I should see an element with xpath "//a[@title='Log out']"
     """)
+
+
+@step(u'I attempt to log in with password "{password}"')
+def attempt_login(context, password):
+    assert context.persona
+    context.execute_steps(u"""
+        When I fill in "login" with "$name"
+        And I fill in "password" with "{}"
+        And I press the element with xpath "//button[contains(string(), 'Login')]"
+    """.format(password))
 
 
 @step(u'I log in and go to datarequest page')
