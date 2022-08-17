@@ -20,7 +20,8 @@ else
     PYTHON_VERSION=py3
 fi
 
-sed "s|@CKAN_VERSION@|$CKAN_VERSION|g" .docker/Dockerfile-template.ckan \
-    | sed "s|@PYTHON_VERSION@|$PYTHON_VERSION|g" > .docker/Dockerfile.ckan
+sed "s|{CKAN_VERSION}|$CKAN_VERSION|g" .docker/Dockerfile-template.ckan \
+    | sed "s|{PYTHON}|$PYTHON|g" \
+    | sed "s|{PYTHON_VERSION}|$PYTHON_VERSION|g" > .docker/Dockerfile.ckan
 
 ahoy build || (ahoy logs; exit 1)
