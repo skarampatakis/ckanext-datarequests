@@ -59,7 +59,7 @@ def _get_context():
             'user': c.user, 'auth_user_obj': c.userobj}
 
 
-def _show_index(user_id, organization_id, include_organization_facet, url_func, file_to_render):
+def _show_index(user_id, organization_id, include_organization_facet, url_func, file_to_render, extra_vars=None):
 
     def pager_url(state=None, sort=None, q=None, page=None):
         params = []
@@ -127,7 +127,20 @@ def _show_index(user_id, organization_id, include_organization_facet, url_func, 
         if include_organization_facet is True:
             c.facet_titles['organization'] = tk._('Organizations')
 
-        return tk.render(file_to_render, extra_vars={'user_dict': c.user_dict if hasattr(c, 'user_dict') else None, 'group_type': 'organization'})
+        if not extra_vars:
+            extra_vars = {}
+        extra_vars['filters'] = c.filters
+        extra_vars['sort'] = c.sort
+        extra_vars['q'] = c.q
+        extra_vars['organization'] = c.organization
+        extra_vars['state'] = c.state
+        extra_vars['datarequest_count'] = c.datarequest_count
+        extra_vars['datarequests'] = c.datarequests
+        extra_vars['search_facets'] = c.search_facets
+        extra_vars['page'] = c.page
+        extra_vars['facet_titles'] = c.facet_titles
+        extra_vars['group_type'] = 'organization'
+        return tk.render(file_to_render, extra_vars=extra_vars)
     except ValueError as e:
         # This exception should only occur if the page value is not valid
         log.warn(e)
@@ -250,14 +263,15 @@ def organization(id):
     context = _get_context()
     c.group_dict = tk.get_action('organization_show')(context, {'id': id})
     url_func = functools.partial(org_datarequest_url, id=id)
-    return _show_index(None, id, False, url_func, 'organization/datarequests.html')
+    return _show_index(None, id, False, url_func, 'organization/datarequests.html', extra_vars={'group_dict': c.group_dict})
 
 
 def user(id):
     context = _get_context()
     c.user_dict = tk.get_action('user_show')(context, {'id': id, 'include_num_followers': True})
     url_func = functools.partial(user_datarequest_url, id=id)
-    return _show_index(id, request_helpers.get_first_query_param('organization', ''), True, url_func, 'user/datarequests.html')
+    return _show_index(id, request_helpers.get_first_query_param('organization', ''), True, url_func, 'user/datarequests.html',
+                       extra_vars={'user': c.user_dict, 'user_dict': c.user_dict})
 
 
 def close(id):
