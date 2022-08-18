@@ -8,6 +8,27 @@ Feature: Datarequest
         Then the browser's URL should contain "/datarequest"
 
     @unauthenticated
+    Scenario: Organisation data requests are accessible via the organisation page
+        Given "Unauthenticated" as the persona
+        When I go to organisation page
+        And I click the link with text that contains "Test Organisation"
+        And I press the element with xpath "//ul[contains(@class, 'nav-tabs')]//a[contains(string(), 'Data Requests')]"
+        Then the browser's URL should contain "/organization/datarequest"
+        And I should see an element with xpath "//input[contains(@aria-label, 'Search Data Requests')]"
+        And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/organization')]"
+        And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/organization/') and contains(string(), 'Test Organisation')]"
+
+    Scenario: User's own data request page is accessible via the user profile
+        Given "CKANUser" as the persona
+        When I log in
+        And I go to the "$name" profile page
+        And I press the element with xpath "//ul[contains(@class, 'nav-tabs')]//a[contains(string(), 'Data Requests')]"
+        Then the browser's URL should contain "/user/datarequest"
+        And I should see an element with xpath "//input[contains(@aria-label, 'Search Data Requests')]"
+        And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/user') and contains(string(), 'Users')]"
+        And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/user/') and contains(string(), '$name')]"
+
+    @unauthenticated
     Scenario: When visiting the datarequests page as a non-logged in user, the 'Add Data Request' button is not visible
         Given "Unauthenticated" as the persona
          When I go to datarequest page

@@ -64,12 +64,22 @@ def title_random_text(context):
     """.format(uuid.uuid4()))
 
 
+@step(u'I go to organisation page')
+def go_to_organisation_page(context):
+    when_i_visit_url(context, '/organization')
+
+
 @step(u'I should see the add comment form')
 def comment_form_visible(context):
     context.execute_steps(u"""
         Then I should see an element with xpath "//form[contains(@class, 'form')]//input[@name='subject']"
         And I should see an element with xpath "//form[contains(@class, 'form')]//textarea[@name='comment']"
     """)
+
+
+@step(u'I go to the "{user_id}" profile page')
+def go_to_user_profile(context, user_id):
+    when_i_visit_url(context, '/user/{}'.format(user_id))
 
 
 @step(u'I should not see the add comment form')
