@@ -272,7 +272,10 @@ def organization(id):
 
 def user(id):
     context = _get_context()
-    c.user_dict = tk.get_action('user_show')(context, {'id': id, 'include_num_followers': True})
+    try:
+        c.user_dict = tk.get_action('user_show')(context, {'id': id, 'include_num_followers': True})
+    except tk.NotAuthorized:
+        tk.abort(403, tk._(u'Not authorized to see this page'))
     url_func = functools.partial(user_datarequest_url, id=id)
     return _show_index(id, request_helpers.get_first_query_param('organization', ''), True, url_func, 'user/datarequests.html',
                        extra_vars={'user': c.user_dict, 'user_dict': c.user_dict})

@@ -18,7 +18,7 @@ Feature: Datarequest
         And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/organization')]"
         And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/organization/') and contains(string(), 'Test Organisation')]"
 
-    Scenario: User's own data request page is accessible via the user profile
+    Scenario: User data request page is accessible via the user profile
         Given "CKANUser" as the persona
         When I log in
         And I go to the "ckan_user" profile page
@@ -28,17 +28,11 @@ Feature: Datarequest
         And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/user') and contains(string(), 'Users')]"
         And I should see an element with xpath "//ol[contains(@class, 'breadcrumb')]//a[contains(@href, '/user/') and contains(string(), 'CKAN User')]"
 
-    Scenario: Other user's data request page is not accessible
-        Given "CKANUser" as the persona
-        When I log in
-        And I go to "/user/datarequest/admin"
-        Then I should see an element with xpath "//*[contains(string(), 'Not authorised to see this page')]"
-
     @unauthenticated
     Scenario: User's data request page is not accessible anonymously
         Given "Unauthenticated" as the persona
         When I go to "/user/datarequest/admin"
-        Then I should see an element with xpath "//*[contains(string(), 'Not authorised to see this page')]"
+        Then I should see an element with xpath "//*[contains(string(), 'Not authorized to see this page')]"
 
     @unauthenticated
     Scenario: When visiting the datarequests page as a non-logged in user, the 'Add Data Request' button is not visible
