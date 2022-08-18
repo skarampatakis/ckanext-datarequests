@@ -139,6 +139,10 @@ def _show_index(user_id, organization_id, include_organization_facet, url_func, 
         extra_vars['search_facets'] = c.search_facets
         extra_vars['page'] = c.page
         extra_vars['facet_titles'] = c.facet_titles
+        if 'user' not in extra_vars:
+            extra_vars['user'] = None
+        if 'user_dict' not in extra_vars:
+            extra_vars['user_dict'] = None
         extra_vars['group_type'] = 'organization'
         return tk.render(file_to_render, extra_vars=extra_vars)
     except ValueError as e:
