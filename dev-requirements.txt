@@ -13,4 +13,3 @@ requests
 six>=1.15.0
 splinter>=0.13.0,<0.17
 xlrd==1.2.0
-
